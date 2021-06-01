@@ -17,20 +17,47 @@ import javax.swing.table.AbstractTableModel;
 public class ProdutoTableModel extends AbstractTableModel{
     private List<Produto> dados = new ArrayList<>();
     private String[] colunas = {"Descriçao", "Quantidade", "Valor"};
+    
+    @Override
+    public String getColumnName(int Column){
+       return colunas[Column];
+    }
 
     @Override
     public int getRowCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return dados.size();
     }
 
     @Override
     public int getColumnCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return colunas.length;
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object getValueAt(int linha, int coluna) {
+        switch(coluna){
+            case 0:
+                return dados.get(linha).getDescricao();
+            case 1:
+                return dados.get(linha).getQuantidade();
+            case 2:
+                return dados.get(linha).getValor();    
+        }
+        return null;
+    }   
+    
+    @Override
+    public void setValueAt(Object valor,int linha, int coluna){
+        switch(coluna){
+            case 0:
+                dados.get(linha).setDescricao((String) valor);
+            case 1:
+                dados.get(linha).setQuantidade(Integer.parseInt((String) valor));
+            case 2:
+                dados.get(linha).setValor(Double.parseDouble((String) valor));
+        }
+        this.fireTableRowsUpdated(linha, linha);
     }
+    
     
 }

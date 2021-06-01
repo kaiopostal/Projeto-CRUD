@@ -6,18 +6,21 @@
 package Janelas;
 
 import BD.Conexao;
+import Model.ProdutoTableModel;
 
 /**
  *
  * @author kaiop
  */
 public class CadastroProduto extends javax.swing.JFrame {
+    ProdutoTableModel modelo = new ProdutoTableModel();
 
     /**
      * Creates new form CadastroProduto
      */
     public CadastroProduto() {
         initComponents();
+        jTProdutos.setModel(modelo);
     }
 
     /**
