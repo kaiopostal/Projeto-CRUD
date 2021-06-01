@@ -7,6 +7,7 @@ package Janelas;
 
 import BD.Conexao;
 import Model.ProdutoTableModel;
+import Objetos.Produto;
 
 /**
  *
@@ -84,6 +85,11 @@ public class CadastroProduto extends javax.swing.JFrame {
         jBAlterar.setText("Alterar");
 
         jBRemover.setText("Remover");
+        jBRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBRemoverActionPerformed(evt);
+            }
+        });
 
         jTProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -160,8 +166,28 @@ public class CadastroProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
-        Conexao.getConnection();
+       Produto p = new Produto();
+       p.setDescricao(jTDescricao.getText());
+       p.setQuantidade(Integer.parseInt(jTQuantidade.getText()));
+       p.setValor(Double.parseDouble(jTValor.getText()));
+       
+       modelo.addLinha(p);
+       
+       
     }//GEN-LAST:event_jBCadastrarActionPerformed
+
+    private void jBRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRemoverActionPerformed
+        if (jTProdutos.getSelectedRow() != -1) {
+            modelo.removeLinha(jTProdutos.getSelectedRow());
+            
+        }
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_jBRemoverActionPerformed
 
     /**
      * @param args the command line arguments
