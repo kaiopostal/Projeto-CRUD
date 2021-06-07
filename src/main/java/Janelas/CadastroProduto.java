@@ -5,7 +5,7 @@
  */
 package Janelas;
 
-import BD.Conexao;
+import DAO.ProdutoDAO;
 import Model.ProdutoTableModel;
 import Objetos.Produto;
 import javax.swing.JOptionPane;
@@ -24,6 +24,7 @@ public class CadastroProduto extends javax.swing.JFrame {
     public CadastroProduto() {
         initComponents();
         jTProdutos.setModel(modelo);
+        modelo.recarregaTabela();
     }
 
     /**
@@ -179,39 +180,47 @@ public class CadastroProduto extends javax.swing.JFrame {
 
     private void jBCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBCadastrarActionPerformed
         Produto p = new Produto();
+        ProdutoDAO dao = new ProdutoDAO();
 
         try {
-            if (jTQuantidade.getText().matches("^[0-9]+$") && jTValor.getText().matches("^[0-9]+$")) {
-                p.setDescricao(jTDescricao.getText());
-                p.setQuantidade(Integer.parseInt(jTQuantidade.getText()));
-                p.setValor(Double.parseDouble(jTValor.getText()));
-                modelo.addLinha(p);
-                limpaCampos();
-            } else {
-                if (!(jTQuantidade.getText().matches("^[0-9]+$"))) {
-                    JOptionPane.showMessageDialog(this, "Preencha a quantidade");
-                    jTQuantidade.requestFocus();
-                } else if (!(jTValor.getText().matches("^[0-9]+$"))) {
-                    JOptionPane.showMessageDialog(this, "Preencha o valor");
-                    jTValor.requestFocus();
-                }
-            }
-
+            p.setDescricao(jTDescricao.getText());
+            p.setQuantidade(Integer.parseInt(jTQuantidade.getText()));
+            p.setValor(Double.parseDouble(jTValor.getText().replace(",", ".")));
+            dao.create(p);
+            modelo.recarregaTabela();
+            limpaCampos();
+//            if (jTQuantidade.getText().matches("^[0-9]+$") && jTValor.getText().matches("^[0-9]+$")) {
+//                p.setDescricao(jTDescricao.getText());
+//                p.setQuantidade(Integer.parseInt(jTQuantidade.getText()));
+//                p.setValor(Double.parseDouble(jTValor.getText()));
+//                modelo.addLinha(p);
+//                limpaCampos();
+//            } else {
+//                if (!(jTQuantidade.getText().matches("^[0-9]+$"))) {
+//                    JOptionPane.showMessageDialog(this, "Preencha a quantidade");
+//                    jTQuantidade.requestFocus();
+//                } else if (!(jTValor.getText().matches("^[0-9]+$"))) {
+//                    JOptionPane.showMessageDialog(this, "Preencha o valor");
+//                    jTValor.requestFocus();
+//                }
+//            }
+//
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Preencha corretamente os campos" + e);
         }
-
-        
 
 
     }//GEN-LAST:event_jBCadastrarActionPerformed
 
     private void jBRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBRemoverActionPerformed
         if (jTProdutos.getSelectedRow() != -1) {
-            modelo.removeLinha(jTProdutos.getSelectedRow());
+            
         }
-
-
+        Produto p = modelo.pegaDadosLinha(jTProdutos.getSelectedRow());
+        ProdutoDAO dao = new ProdutoDAO();
+        
+        dao.delete(p);
+        modelo.recarregaTabela();
     }//GEN-LAST:event_jBRemoverActionPerformed
 
     private void jTProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProdutosMouseClicked
@@ -219,22 +228,23 @@ public class CadastroProduto extends javax.swing.JFrame {
         jTDescricao.setText(p.getDescricao());
         jTQuantidade.setText(String.valueOf(p.getQuantidade()));
         jTValor.setText(String.valueOf(p.getValor()));
-        
-        
-        
-        
-        
+
+
     }//GEN-LAST:event_jTProdutosMouseClicked
 
     private void jBAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAlterarActionPerformed
-       if(jTProdutos.getSelectedRow() != -1){
-       modelo.setValueAt(jTDescricao.getText(), jTProdutos.getSelectedRow(), 0);
-       modelo.setValueAt(jTQuantidade.getText(), jTProdutos.getSelectedRow(), 1);
-       modelo.setValueAt(jTValor.getText(), jTProdutos.getSelectedRow(), 2);
-       limpaCampos();
-       
-       }
-       
+        if (jTProdutos.getSelectedRow() != -1) {
+            modelo.setValueAt(jTDescricao.getText(), jTProdutos.getSelectedRow(), 0);
+            modelo.setValueAt(jTQuantidade.getText(), jTProdutos.getSelectedRow(), 1);
+            modelo.setValueAt(jTValor.getText(), jTProdutos.getSelectedRow(), 2);
+
+            Produto p = modelo.pegaDadosLinha(jTProdutos.getSelectedRow());
+            ProdutoDAO dao = new ProdutoDAO();
+            dao.update(p);
+            limpaCampos();
+            modelo.recarregaTabela();
+        }
+
     }//GEN-LAST:event_jBAlterarActionPerformed
     public void limpaCampos() {
         jTDescricao.setText("");
