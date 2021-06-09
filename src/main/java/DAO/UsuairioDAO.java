@@ -6,7 +6,7 @@
 package DAO;
 
 import BD.Conexao;
-import Objetos.Produto;
+import Objetos.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,71 +19,69 @@ import javax.swing.JOptionPane;
  *
  * @author kaiop
  */
-public class ProdutoDAO {
+public class UsuairioDAO {
 
-    public List<Produto> read() {
+    public List<Usuario> read() {
 
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        List<Produto> produtos = new ArrayList<>();
+        List<Usuario> Usuario = new ArrayList<>();
         try {
-            stmt = con.prepareStatement("SELECT * FROM  tbl_produto");
+            stmt = con.prepareStatement("SELECT * FROM  tbl_usuarios");
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-                Produto p = new Produto();
-                p.setId(rs.getInt("id"));
-                p.setDescricao(rs.getString("descricao"));
-                p.setQuantidade(rs.getInt("Quantidade"));
-                p.setValor(rs.getDouble("valor"));
-                produtos.add(p);
-
+                Usuario u = new Usuario();
+                u.setId(rs.getInt("id"));
+                u.setLogin(rs.getString("login"));
+                u.setSenha(rs.getString("senha"));
+                u.setNome(rs.getString("nome"));
+                Usuario.add(u);
             }
-
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Falha ao obter dados " + e);
         } finally {
             Conexao.closeConnection(con, stmt, rs);
         }
-        return produtos;
+        return Usuario;
+
     }
 
-    public void create(Produto p) {
+    public void create(Usuario u) {
 
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
 
         try {
             stmt = con.prepareStatement(
-                    "INSERT INTO tbl_produto (descricao, valor, quantidade) VALUES (?, ?, ?)");
-            stmt.setString(1, p.getDescricao());
-            stmt.setDouble(2, p.getValor());
-            stmt.setInt(3, p.getQuantidade());
-            
-            
+                    "INSERT INTO tbl_usuarios(nome, senha, login) VALUES (?,?,?)");
+            stmt.setString(1, u.getNome());
+            stmt.setString(2, u.getSenha());
+            stmt.setString(3, u.getLogin());
             stmt.execute();
-                    JOptionPane.showMessageDialog(null, "Cadastradado com sucesso");
+            JOptionPane.showMessageDialog(null, "Cadastradado com sucesso");
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Falha ao obter dados " + e);
         } finally {
             Conexao.closeConnection(con, stmt);
         }
+
     }
     
-    public void update(Produto p){
+    public void update(Usuario u){
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         
         try {
             stmt = con.prepareStatement(
-               "UPDATE tbl_produto SET descricao = ? , valor = ?, quantidade = ? WHERE id = ?");
-            stmt.setString(1, p.getDescricao());
-            stmt.setDouble(2, p.getValor());
-            stmt.setInt(3, p.getQuantidade());
-            stmt.setInt(4, p.getId());
+              "UPDATE tbl_usuarios SET nome = ?, senha = ?, login = ? WHERE id = ?");
+            stmt.setString(1, u.getNome());
+            stmt.setString(2, u.getSenha());
+            stmt.setString(3, u.getLogin());
+            stmt.setInt(4, u.getId());
             
             stmt.execute();
                     JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
@@ -92,17 +90,18 @@ public class ProdutoDAO {
             JOptionPane.showMessageDialog(null, "Falha ao atualizar" + e);
         }finally {
             Conexao.closeConnection(con, stmt);
-        }
     }
-    
-    public void delete(Produto p){
+        
+        
+  }
+        public void delete(Usuario u){
         Connection con = Conexao.getConnection();
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement(
-               "DELETE FROM tbl_produto WHERE id = ?");
+               "DELETE FROM tbl_usuarios WHERE id = ?");
             
-            stmt.setInt(1, p.getId());
+            stmt.setInt(1, u.getId());
             
             stmt.execute();
                     JOptionPane.showMessageDialog(null, "Deletado com sucesso");
@@ -115,5 +114,7 @@ public class ProdutoDAO {
         
         
     }
-    
+
+
+
 }
