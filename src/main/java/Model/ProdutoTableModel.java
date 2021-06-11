@@ -59,6 +59,9 @@ public class ProdutoTableModel extends AbstractTableModel{
             case 2:
                 dados.get(linha).setValor(Double.parseDouble((String) valor));
                 break;
+            
+              
+                
         }
         this.fireTableRowsUpdated(linha, linha);
     }

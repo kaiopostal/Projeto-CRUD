@@ -38,6 +38,7 @@ public class UsuairioDAO {
                 u.setLogin(rs.getString("login"));
                 u.setSenha(rs.getString("senha"));
                 u.setNome(rs.getString("nome"));
+                u.setTipo(rs.getString("tipo"));
                 Usuario.add(u);
             }
         } catch (SQLException e) {
@@ -56,10 +57,11 @@ public class UsuairioDAO {
 
         try {
             stmt = con.prepareStatement(
-                    "INSERT INTO tbl_usuarios(nome, senha, login) VALUES (?,?,?)");
+                    "INSERT INTO tbl_usuarios(nome, senha, login,tipo) VALUES (?,?,?,?)");
             stmt.setString(1, u.getNome());
             stmt.setString(2, u.getSenha());
             stmt.setString(3, u.getLogin());
+            stmt.setString(4, u.getTipo());
             stmt.execute();
             JOptionPane.showMessageDialog(null, "Cadastradado com sucesso");
 
@@ -77,11 +79,12 @@ public class UsuairioDAO {
         
         try {
             stmt = con.prepareStatement(
-              "UPDATE tbl_usuarios SET nome = ?, senha = ?, login = ? WHERE id = ?");
+              "UPDATE tbl_usuarios SET nome = ?, senha = ?, login = ?, tipo = ? WHERE id = ?");
             stmt.setString(1, u.getNome());
             stmt.setString(2, u.getSenha());
             stmt.setString(3, u.getLogin());
-            stmt.setInt(4, u.getId());
+            stmt.setString(4, u.getTipo());
+            stmt.setInt(5, u.getId());
             
             stmt.execute();
                     JOptionPane.showMessageDialog(null, "Atualizado com sucesso");

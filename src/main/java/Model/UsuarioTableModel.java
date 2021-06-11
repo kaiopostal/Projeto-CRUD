@@ -18,7 +18,7 @@ import javax.swing.table.AbstractTableModel;
 public class UsuarioTableModel extends AbstractTableModel {
 
     private List<Usuario> dados = new ArrayList<>();
-    private String[] colunas = {"Nome", "Senha", "Login"};
+    private String[] colunas = {"Nome", "Senha", "Login", "tipo"};
 
     @Override
     public String getColumnName(int Column) {
@@ -40,11 +40,13 @@ public class UsuarioTableModel extends AbstractTableModel {
     public Object getValueAt(int linha, int coluna) {
         switch (coluna) {
             case 0:
-                return dados.get(linha).getLogin();
+                return dados.get(linha).getNome();
             case 1:
                 return dados.get(linha).getSenha();
             case 2:
-                return dados.get(linha).getNome();
+                return dados.get(linha).getLogin();
+            case 3:
+                return dados.get(linha).getTipo();
 
         }
         return null;
@@ -54,13 +56,16 @@ public class UsuarioTableModel extends AbstractTableModel {
     public void setValueAt(Object valor, int linha, int coluna) {
         switch (coluna) {
             case 0:
-                dados.get(linha).setLogin((String) valor);
-                break;
-            case 1:
                 dados.get(linha).setNome((String) valor);
                 break;
-            case 2:
+            case 1:
                 dados.get(linha).setSenha((String) valor);
+                break;
+            case 2:
+                dados.get(linha).setLogin((String) valor);
+                break;
+            case 3:
+                dados.get(linha).setTipo((String) valor);
                 break;
         }
         this.fireTableRowsUpdated(linha, linha);
