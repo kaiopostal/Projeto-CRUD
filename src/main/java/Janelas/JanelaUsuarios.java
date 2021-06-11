@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 public class JanelaUsuarios extends javax.swing.JFrame {
 
     UsuarioTableModel modelo = new UsuarioTableModel();
+    CadastroProduto cp = new CadastroProduto();
 
     public JanelaUsuarios() {
         initComponents();
@@ -27,6 +28,18 @@ public class JanelaUsuarios extends javax.swing.JFrame {
         jCTipo.addItem("ADM");
         jCTipo.addItem("USR");
         jCTipo.setSelectedIndex(1);
+    }
+    
+    public JanelaUsuarios(CadastroProduto cp) {
+        initComponents();
+        jTUsuario.setModel(modelo);
+        modelo.recarregaTabela();
+        jCTipo.removeAllItems();
+
+        jCTipo.addItem("ADM");
+        jCTipo.addItem("USR");
+        jCTipo.setSelectedIndex(1);
+        this.cp = cp;
     }
 
     /**
@@ -59,6 +72,14 @@ public class JanelaUsuarios extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -293,6 +314,14 @@ public class JanelaUsuarios extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_jBAlterarActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    }//GEN-LAST:event_formWindowClosed
+ 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        cp.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
     public void limpaCampos() {
         jTLogin.setText("");
         jTNome.setText("");

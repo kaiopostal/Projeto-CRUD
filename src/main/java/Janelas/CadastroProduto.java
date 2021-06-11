@@ -358,8 +358,9 @@ public class CadastroProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_jTValorActionPerformed
 
     private void jBUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBUsuariosActionPerformed
-     JanelaUsuarios ju = new JanelaUsuarios();
+     JanelaUsuarios ju = new JanelaUsuarios(this);
      ju.setVisible(true);
+     this.setVisible(false);
     }//GEN-LAST:event_jBUsuariosActionPerformed
     public void limpaCampos() {
         jTDescricao.setText("");
