@@ -18,7 +18,7 @@ import javax.swing.table.AbstractTableModel;
 public class UsuarioTableModel extends AbstractTableModel {
 
     private List<Usuario> dados = new ArrayList<>();
-    private String[] colunas = {"Nome", "Senha", "Login", "tipo"};
+    private String[] colunas = {"Nome", "Senha", "Login", "Tipo"};
 
     @Override
     public String getColumnName(int Column) {
